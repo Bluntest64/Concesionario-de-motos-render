@@ -1,9 +1,8 @@
 from flask import Flask
-from config import Config
+from config import get_connection
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
 
     from controllers.vehiculo_controller import vehiculo_bp
     from controllers.cliente_controller import cliente_bp
