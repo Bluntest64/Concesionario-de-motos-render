@@ -5,16 +5,20 @@ vehiculo_bp = Blueprint('vehiculo', __name__)
 
 @vehiculo_bp.route('/')
 def listar():
-    marca    = request.args.get('marca', '')
-    modelo   = request.args.get('modelo', '')
-    precio   = request.args.get('precio_max', '')
-    estado   = request.args.get('estado', '')
-    vehiculos = Vehiculo.obtener_todos(marca, modelo, precio or None, estado or None)
+    marca  = request.args.get('marca', '')
+    modelo = request.args.get('modelo', '')
+    precio = request.args.get('precio_max', '')
+    estado = request.args.get('estado', '')
+
+    precio = float(precio) if precio else None
+
+    vehiculos = Vehiculo.obtener_todos(marca, modelo, precio, estado or None)
+
     filtros = {
-    "marca": marca,
-    "modelo": modelo,
-    "precio": precio,
-    "estado": estado
+        "marca": marca,
+        "modelo": modelo,
+        "precio": precio,
+        "estado": estado
     }
     return render_template("vehiculos/listar.html", vehiculos=vehiculos, filtros=filtros)
 
