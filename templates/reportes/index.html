@@ -40,7 +40,7 @@
         <td>{{ v.modelo }}</td>
         <td>{{ v.cilindraje }} cc</td>
         <td>{{ v.color or '—' }}</td>
-        <td>${{ "{:,.0f}".format(v[2]) }}</td>
+        <td>${{ "{:,.0f}".format(v.precio) }}</td>
       </tr>
       {% else %}
       <tr><td colspan="5"><div class="empty-state"><strong>Sin stock disponible</strong></div></td></tr>
