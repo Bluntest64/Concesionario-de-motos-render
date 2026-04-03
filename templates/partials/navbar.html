@@ -1,0 +1,29 @@
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="{{ url_for('vehiculo.listar') }}" class="navbar-brand">
+      MOTO<span>GAMA</span>
+    </a>
+    <ul class="navbar-nav">
+      <li>
+        <a href="{{ url_for('vehiculo.listar') }}" class="nav-link">
+          🏍 Vehículos
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('cliente.listar') }}" class="nav-link">
+          👤 Clientes
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('venta.listar') }}" class="nav-link">
+          💰 Ventas
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('reporte.index') }}" class="nav-link">
+          📊 Reportes
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

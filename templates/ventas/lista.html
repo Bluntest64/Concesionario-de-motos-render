@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Ventas{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Registro de <span>Ventas</span></h1>
+  <a href="{{ url_for('venta.nueva') }}" class="btn btn-primary">+ Nueva venta</a>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Documento</th>
+        <th>Motocicleta</th>
+        <th>Cilindraje</th>
+        <th>Valor</th>
+        <th>Detalle</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if ventas %}
+        {% for v in ventas %}
+        <tr>
+          <td style="color:var(--color-muted);">{{ v.id }}</td>
+          <td>{{ v.fecha_venta }}</td>
+          <td><strong>{{ v.nombre_cliente }}</strong></td>
+          <td>{{ v.documento }}</td>
+          <td>{{ v.marca }} {{ v.modelo }}</td>
+          <td>{{ v.cilindraje }} cc</td>
+          <td style="color:var(--color-success);font-weight:600;">
+            ${{ "{:,.0f}".format(v.valor) }}
+          </td>
+          <td>
+            <a href="{{ url_for('venta.detalle', id=v.id) }}" class="btn btn-outline btn-sm">Ver</a>
+          </td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="8">
+            <div class="empty-state">
+              <strong>Sin ventas registradas</strong>
+              <p>Aún no se ha registrado ninguna venta.</p>
+            </div>
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/ventas.js') }}"></script>
+{% endblock %}

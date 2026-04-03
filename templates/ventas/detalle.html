@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Detalle Venta #{{ venta.id }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Venta <span>#{{ venta.id }}</span></h1>
+  <a href="{{ url_for('venta.listar') }}" class="btn btn-outline">← Volver</a>
+</div>
+
+<div class="form-card" style="max-width:500px;">
+  <table style="width:100%;font-size:0.92rem;">
+    <tbody>
+      <tr>
+        <td style="color:var(--color-muted);padding:0.6rem 0;width:45%;">Fecha</td>
+        <td>{{ venta.fecha_venta }}</td>
+      </tr>
+      <tr>
+        <td style="color:var(--color-muted);padding:0.6rem 0;">Cliente</td>
+        <td><strong>{{ venta.nombre_cliente }}</strong></td>
+      </tr>
+      <tr>
+        <td style="color:var(--color-muted);padding:0.6rem 0;">Motocicleta</td>
+        <td>{{ venta.marca }} {{ venta.modelo }}</td>
+      </tr>
+      <tr>
+        <td style="color:var(--color-muted);padding:0.6rem 0;">Valor</td>
+        <td style="color:var(--color-success);font-weight:700;font-size:1.1rem;">
+          ${{ "{:,.0f}".format(venta.valor) }}
+        </td>
+      </tr>
+      {% if venta.observacion %}
+      <tr>
+        <td style="color:var(--color-muted);padding:0.6rem 0;">Observación</td>
+        <td>{{ venta.observacion }}</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

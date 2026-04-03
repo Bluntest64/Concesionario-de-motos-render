@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Reportes{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Panel de <span>Reportes</span></h1>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Motos disponibles</div>
+    <div class="stat-value">{{ disponibles | length }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Motos vendidas</div>
+    <div class="stat-value">{{ vendidas | length }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total ventas</div>
+    <div class="stat-value">{{ historial | length }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Ingresos totales</div>
+    <div class="stat-value accent">${{ "{:,.0f}".format(total_ingresos) }}</div>
+  </div>
+</div>
+
+<!-- Tabla disponibles -->
+<h2 style="font-size:1.3rem;margin-bottom:0.85rem;">Motocicletas disponibles</h2>
+<div class="table-wrap" style="margin-bottom:2rem;">
+  <table>
+    <thead>
+      <tr><th>Marca</th><th>Modelo</th><th>Cilindraje</th><th>Color</th><th>Precio</th></tr>
+    </thead>
+    <tbody>
+      {% for v in disponibles %}
+      <tr>
+        <td><strong>{{ v.marca }}</strong></td>
+        <td>{{ v.modelo }}</td>
+        <td>{{ v.cilindraje }} cc</td>
+        <td>{{ v.color or '—' }}</td>
+        <td>${{ "{:,.0f}".format(v.precio) }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5"><div class="empty-state"><strong>Sin stock disponible</strong></div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Historial de ventas -->
+<h2 style="font-size:1.3rem;margin-bottom:0.85rem;">Historial de ventas</h2>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>Fecha</th><th>Cliente</th><th>Motocicleta</th><th>Valor</th></tr>
+    </thead>
+    <tbody>
+      {% for v in historial %}
+      <tr>
+        <td>{{ v.fecha_venta }}</td>
+        <td>{{ v.nombre_cliente }}</td>
+        <td>{{ v.marca }} {{ v.modelo }}</td>
+        <td style="color:var(--color-success);font-weight:600;">${{ "{:,.0f}".format(v.valor) }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4"><div class="empty-state"><strong>Sin ventas aún</strong></div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+{% endblock %}

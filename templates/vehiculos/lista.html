@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Vehículos{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Inventario de <span>Motocicletas</span></h1>
+  <a href="{{ url_for('vehiculo.nuevo') }}" class="btn btn-primary">+ Registrar moto</a>
+</div>
+
+<!-- Filtros -->
+<form method="GET" action="{{ url_for('vehiculo.listar') }}">
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label for="marca">Marca</label>
+      <input type="text" id="marca" name="marca" class="form-control"
+             placeholder="Ducati, BMW…" value="{{ filtros.marca }}">
+    </div>
+    <div class="filter-group">
+      <label for="modelo">Modelo</label>
+      <input type="text" id="modelo" name="modelo" class="form-control"
+             placeholder="Panigale, S1000…" value="{{ filtros.modelo }}">
+    </div>
+    <div class="filter-group">
+      <label for="precio_max">Precio máximo</label>
+      <input type="number" id="precio_max" name="precio_max" class="form-control"
+             placeholder="Ej: 80000000" value="{{ filtros.precio_max }}">
+    </div>
+    <div class="filter-group">
+      <label for="estado">Estado</label>
+      <select id="estado" name="estado" class="form-control">
+        <option value="">Todos</option>
+        <option value="disponible" {% if filtros.estado == 'disponible' %}selected{% endif %}>Disponible</option>
+        <option value="vendido"    {% if filtros.estado == 'vendido'    %}selected{% endif %}>Vendido</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+      <a href="{{ url_for('vehiculo.listar') }}" class="btn btn-outline btn-sm">Limpiar</a>
+    </div>
+  </div>
+</form>
+
+<!-- Tabla -->
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Cilindraje</th>
+        <th>Color</th>
+        <th>Año</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if vehiculos %}
+        {% for v in vehiculos %}
+        <tr>
+          <td style="color:var(--color-muted);">{{ v.id }}</td>
+          <td><strong>{{ v.marca }}</strong></td>
+          <td>{{ v.modelo }}</td>
+          <td>{{ v.cilindraje }} cc</td>
+          <td>{{ v.color or '—' }}</td>
+          <td>{{ v.anio or '—' }}</td>
+          <td>${{ "{:,.0f}".format(v.precio) }}</td>
+          <td>
+            {% if v.estado == 'disponible' %}
+              <span class="badge badge-success">Disponible</span>
+            {% else %}
+              <span class="badge badge-danger">Vendido</span>
+            {% endif %}
+          </td>
+          <td style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <a href="{{ url_for('vehiculo.editar', id=v.id) }}" class="btn btn-outline btn-sm">Editar</a>
+            <form method="POST" action="{{ url_for('vehiculo.eliminar', id=v.id) }}"
+                  onsubmit="return confirmarEliminar(this, '¿Eliminar {{ v.marca }} {{ v.modelo }}?')">
+              <button type="submit" class="btn-danger-sm">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="9">
+            <div class="empty-state">
+              <strong>Sin resultados</strong>
+              <p>No se encontraron motocicletas con los filtros aplicados.</p>
+            </div>
+          </td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/vehiculos.js') }}"></script>
+{% endblock %}
