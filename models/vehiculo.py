@@ -37,33 +37,59 @@ class Vehiculo:
         conexion.close()
         return vehiculo
 
-    @staticmethod
-    def crear(datos):
-        conexion = get_connection()
-        cursor = conexion.cursor()
-        cursor.execute("""
-            INSERT INTO vehiculos (marca, modelo, precio, cilindraje, color, anio, estado)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (datos['marca'], datos['modelo'], datos['precio'],
-              datos['cilindraje'], datos['color'], datos['anio'], datos['estado']))
-        conexion.commit()
-        cursor.close()
-        conexion.close()
+@staticmethod
+def crear(datos):
+    conexion = get_connection()
+    cursor = conexion.cursor()
+
+    precio = float(datos['precio']) if datos['precio'] else None
+    cilindraje = int(datos['cilindraje']) if datos['cilindraje'] else None
+    anio = int(datos['anio']) if datos['anio'] else None
+
+    cursor.execute("""
+        INSERT INTO vehiculos (marca, modelo, precio, cilindraje, color, anio, estado)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """, (
+        datos['marca'],
+        datos['modelo'],
+        precio,
+        cilindraje,
+        datos['color'],
+        anio,
+        datos['estado']
+    ))
+
+    conexion.commit()
+    cursor.close()
+    conexion.close()
     
-    @staticmethod
-    def actualizar(id, datos):
-        conexion = get_connection()
-        cursor = conexion.cursor()
-        cursor.execute("""
-            UPDATE vehiculos SET marca=%s, modelo=%s, precio=%s,
-            cilindraje=%s, color=%s, anio=%s, estado=%s
-            WHERE id=%s
-        """, (datos['marca'], datos['modelo'], datos['precio'],
-              datos['cilindraje'], datos['color'], datos['anio'],
-              datos['estado'], id))
-        conexion.commit()
-        cursor.close()
-        conexion.close()
+@staticmethod
+def actualizar(id, datos):
+    conexion = get_connection()
+    cursor = conexion.cursor()
+
+    precio = float(datos['precio']) if datos['precio'] else None
+    cilindraje = int(datos['cilindraje']) if datos['cilindraje'] else None
+    anio = int(datos['anio']) if datos['anio'] else None
+
+    cursor.execute("""
+        UPDATE vehiculos SET marca=%s, modelo=%s, precio=%s,
+        cilindraje=%s, color=%s, anio=%s, estado=%s
+        WHERE id=%s
+    """, (
+        datos['marca'],
+        datos['modelo'],
+        precio,
+        cilindraje,
+        datos['color'],
+        anio,
+        datos['estado'],
+        id
+    ))
+
+    conexion.commit()
+    cursor.close()
+    conexion.close()
 
     @staticmethod
     def eliminar(id):
