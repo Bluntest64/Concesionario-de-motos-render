@@ -66,7 +66,7 @@
           <td>{{ v.cilindraje }} cc</td>
           <td>{{ v.color or '—' }}</td>
           <td>{{ v.anio or '—' }}</td>
-          <td>${{ "{:,.0f}".format(v.precio) }}</td>
+          <td>${{ "{:,.0f}".format(v[2]) }}</td>
           <td>
             {% if v.estado == 'disponible' %}
               <span class="badge badge-success">Disponible</span>
