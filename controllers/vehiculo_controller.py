@@ -25,11 +25,26 @@ def listar():
 @vehiculo_bp.route('/nuevo', methods=['GET', 'POST'])
 def nuevo():
     if request.method == 'POST':
-        datos = {k: request.form.get(k, '') for k in
-                 ['marca', 'modelo', 'precio', 'cilindraje', 'color', 'anio', 'estado']}
-        Vehiculo.crear(datos)
-        flash('Motocicleta registrada exitosamente.', 'success')
+        try:
+            datos = {
+                'marca': request.form.get('marca'),
+                'modelo': request.form.get('modelo'),
+                'precio': int(request.form.get('precio')),
+                'cilindraje': int(request.form.get('cilindraje')),
+                'color': request.form.get('color'),
+                'anio': int(request.form.get('anio')) if request.form.get('anio') else None,
+                'estado': request.form.get('estado')
+            }
+
+            Vehiculo.crear(datos)
+            flash('Motocicleta registrada exitosamente.', 'success')
+
+        except Exception as e:
+            print("ERROR:", e)
+            flash('Error al registrar motocicleta.', 'danger')
+
         return redirect(url_for('vehiculo.listar'))
+
     return render_template('vehiculos/formulario.html', vehiculo=None, accion='Registrar')
 
 @vehiculo_bp.route('/editar/<int:id>', methods=['GET', 'POST'])
